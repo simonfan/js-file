@@ -1,0 +1,72 @@
+{
+    "project": {
+        "name": "js-file",
+        "version": "0.0.0"
+    },
+    "files": {
+        "src/comments/block.js": {
+            "name": "src/comments/block.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/comments/index.js": {
+            "name": "src/comments/index.js",
+            "modules": {
+                "comments": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/index.js": {
+            "name": "src/index.js",
+            "modules": {
+                "jsfile": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "comments": {
+            "name": "comments",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/comments/index.js",
+            "line": 3,
+            "description": "Holds functionality related to parsing commentss."
+        },
+        "jsfile": {
+            "name": "jsfile",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/index.js",
+            "line": 5,
+            "description": "CJS module."
+        }
+    },
+    "classes": {},
+    "classitems": [
+        {
+            "file": "src/comments/block.js",
+            "line": 12,
+            "description": ">>identifier\nkey: value\nkey0: value0\narray:\n   -v\n   -aaa\n   -aaaasddd",
+            "class": ""
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\n>>identifier\nkey: value\nkey0: value0\narray:\n   -v\n   -aaa\n   -aaaasddd",
+            "line": " src/comments/block.js:12"
+        }
+    ]
+}
