@@ -24,7 +24,7 @@ module.exports = function (grunt) {
 
 		yuidoc: {
 			compile: {
-				name: 'js-file',
+				name: 'cjs-demo',
 				version: '0.0.0',
 			//	description: '',
 			// 	url: '',
@@ -52,13 +52,13 @@ module.exports = function (grunt) {
 
 			// src
 			src: {
-				src: ['src/*/*.js']
+				src: ['src/**/*.js']
 			}
 		},
 
 		watch: {
 			live: {
-				files: ['src/**/*.js', 'test/*.js', 'demo/**', 'docs/**', 'Gruntfile.js'],
+				files: ['src/**/*.js', 'test/**', 'demo/**', 'docs/**', 'Gruntfile.js'],
 				tasks: ['jshint:gruntfile', 'jshint:src', 'simplemocha']
 			}
 		},

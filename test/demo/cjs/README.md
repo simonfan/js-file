@@ -1,0 +1,3 @@
+# cjs-demo[![Build Status](https://secure.travis-ci.org/simonfan/cjs-demo.png?branch=master)](http://travis-ci.org/simonfan/cjs-demo)
+
+Some module...

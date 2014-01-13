@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/index.js - js-file</title>
+    <title>src/dependencies/base.js - js-file</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -84,48 +84,92 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/index.js</h1>
+                        <h1 class="file-heading">File: src/dependencies/base.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//     jsfile
-//     (c) simonfan
-//     jsfile is licensed under the MIT terms.
-
-/**
- * CJS module.
- *
- * @module jsfile
- */
-
 &#x27;use strict&#x27;;
 
-var file = require(&#x27;file-object&#x27;),
-	_ = require(&#x27;lodash&#x27;),
-	resolve = require(&#x27;resolve&#x27;);
+var path = require(&#x27;path&#x27;),
+	fs = require(&#x27;fs&#x27;);
 
-var comments = require(&#x27;./comments&#x27;);
+var subject = require(&#x27;subject&#x27;),
+	resolve = require(&#x27;resolve&#x27;),
+	_ = require(&#x27;lodash&#x27;);
 
-var jsfile = module.exports = file.extend(function jsfile() {
-	file.prototype.initialize.apply(this, arguments);
+// CAREFUL! circular dependency here..
+var jsfile = require(&#x27;../index&#x27;);
+
+/**
+ * This defines base functionalities for the dependencies object
+ */
+var dependencies = module.exports = subject(function dependencies(filename, filedata) {
+
+	filedata = filedata || fs.readFileSync(filename, { encoding: &#x27;utf-8&#x27; });
+
+	this.path = filename;
+	this.src = filedata;
 });
 
-jsfile.proto({
-	extension: &#x27;.js&#x27;,
 
-	// partialize comments invocation
-	comments: function (options) {
-		// guarantee there is data to be parsed
-		if (!this.raw) {
-			this.readSync();
+// set proto properties
+dependencies.proto({
+	// ids: function to get the &#x27;dependencies&#x27;
+
+	filenames: function filenames(origin, maxDepth) {
+		maxDepth = typeof origin === &#x27;number&#x27; || typeof origin === &#x27;boolean&#x27; ? origin : maxDepth ? maxDepth : 1;
+		origin = typeof origin === &#x27;string&#x27; ? origin : &#x27;all&#x27;;
+
+		var ids = this.ids(origin),
+			immediate = ids.map(this.resolve.bind(this));
+
+		// remove false values from immediate
+		// NODE CORE modules are filtered here, this.resolve.
+		// core modules are resolved to false paths.
+		immediate = _.compact(immediate);
+
+		if (maxDepth &gt; 1 || maxDepth === true) {
+
+			var next = _.clone(immediate);
+
+			// reduce maxDepth
+			maxDepth = typeof maxDepth === &#x27;number&#x27; ? maxDepth -- : maxDepth;
+
+			// go deeper
+			_.each(immediate, function (fname) {
+				var file = jsfile(fname),
+					deps = file.dependencies(&#x27;cjs-node&#x27;);
+
+				next = _.union(next, deps.filenames(origin, maxDepth));
+			});
+
+			return next;
+
+		} else {
+			return immediate;
 		}
-
-		return comments(this.raw, options);
 	},
-});
 
-// dependency parsers
-jsfile.proto(require(&#x27;./dependencies&#x27;));
+	files: function files() {
+		var filenames = this.filenames.apply(this, arguments);
+
+		var res = {};
+
+		_.each(filenames, function (filename) {
+			// build file and set on res
+			res[filename] = jsfile(filename);
+
+		}.bind(this));
+
+		return res;
+	},
+
+	tree: function tree(options) {
+		options = options || {};
+
+		var immediate = this.ids();
+	}
+});
 
     </pre>
 </div>

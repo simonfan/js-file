@@ -17,11 +17,11 @@ describe('jsfile basics', function () {
 	describe('file = jsfile(fpath {String})', function () {
 
 		beforeEach(function () {
-			this.file = jsfile(path.join(__dirname, 'demo/comments'));
+			this.commentsFile = jsfile(path.join(__dirname, 'demo/comments'));
 		});
 
 		it('reads', function () {
-			this.file
+			this.commentsFile
 				.readSync()
 				.data().should.be.type('string');
 		});
@@ -29,22 +29,20 @@ describe('jsfile basics', function () {
 		describe('file.comment', function () {
 
 			it('can create regexp for block comments', function () {
-				var re = this.file.comments().blockRegExp('test-block');
+				var re = this.commentsFile.comments().blockRegExp('test-block');
 
-				re.test(this.file.raw).should.be.true;
+				re.test(this.commentsFile.raw).should.be.true;
 			})
 
 			it('can parse comment blocks', function () {
-				var a = this.file.comments().block('test-block');
+				var a = this.commentsFile.comments().block('test-block');
 
 				a.split('\n').length
 					.should.equal(6)
 			})
 
 			it('can parse yaml formatted blocks', function () {
-				var yml = this.file.comments().yaml('test-block');
-
-				console.log(yml)
+				var yml = this.commentsFile.comments().yaml('test-block');
 
 				yml.value.should.equal('banana');
 			})

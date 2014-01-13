@@ -93,26 +93,21 @@
 var _ = require(&#x27;lodash&#x27;),
 	mapo = require(&#x27;mapo&#x27;);
 
-// &gt;&gt;block
-// name: lalal
-// text: lalala
-// other: lalala
-// and more: bla bla
-
 /**
- * &gt;&gt;identifier
- * key: value
- * key0: value0
- * array:
- *    -v
- *    -aaa
- *    -aaaasddd
+ * &gt;&gt;test-block
+ * name: test
+ * value: banana
+ * color: yellow
+ * list:
+ *     - first
+ *     - second
  */
 
 exports.blockBorder = &#x27; \\* &#x27;;
 
 	// regexp partials
-var start = &#x27;\\/\\*(.|\n|\r|\n\r)*?&#x27;,
+var n = &#x27;(\n|\r|\n\r)&#x27;,
+	start = &#x27;\\/\\*(.|\n|\r|\n\r)*?&#x27;,
 	body = &#x27;(.|\n|\r|\n\r)*?&#x27;,
 	end = &#x27;\\*\\/&#x27;;
 
@@ -132,8 +127,8 @@ exports.blockMatch = function blockMatch(name) {
 };
 
 exports._blockTrim = function _blockTrim(name, s) {
-	return s.replace(new RegExp(&#x27;^&#x27; + head(this.prefix, name)), &#x27;&#x27;)			// trim start
-			.replace(new RegExp(end + &#x27;$&#x27;), &#x27;&#x27;)							// trim end
+	return s.replace(new RegExp(&#x27;^&#x27; + head(this.prefix, name)), &#x27;&#x27;)		// trim start
+			.replace(new RegExp(&#x27;(\n|\r|\n\r).*?&#x27; + end + &#x27;$&#x27;), &#x27;&#x27;)		// trim end
 			.replace(new RegExp(&#x27;^&#x27; + this.blockBorder, &#x27;mg&#x27;), &#x27;&#x27;);		// trim border
 };
 

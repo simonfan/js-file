@@ -3,20 +3,14 @@
 var _ = require('lodash'),
 	mapo = require('mapo');
 
-// >>block
-// name: lalal
-// text: lalala
-// other: lalala
-// and more: bla bla
-
 /**
- * >>identifier
- * key: value
- * key0: value0
- * array:
- *    -v
- *    -aaa
- *    -aaaasddd
+ * >>test-block
+ * name: test
+ * value: banana
+ * color: yellow
+ * list:
+ *     - first
+ *     - second
  */
 
 exports.blockBorder = ' \\* ';

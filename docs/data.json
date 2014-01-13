@@ -20,6 +20,41 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/dependencies/amd/lib/r.js/lang.js": {
+            "name": "src/dependencies/amd/lib/r.js/lang.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/dependencies/amd/lib/r.js/parse.js": {
+            "name": "src/dependencies/amd/lib/r.js/parse.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/dependencies/amd/requirejs.js": {
+            "name": "src/dependencies/amd/requirejs.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/dependencies/base.js": {
+            "name": "src/dependencies/base.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/helpers.js": {
+            "name": "src/helpers.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/index.js": {
             "name": "src/index.js",
             "modules": {
@@ -58,15 +93,668 @@
     "classitems": [
         {
             "file": "src/comments/block.js",
-            "line": 12,
-            "description": ">>identifier\nkey: value\nkey0: value0\narray:\n   -v\n   -aaa\n   -aaaasddd",
+            "line": 6,
+            "description": ">>test-block\nname: test\nvalue: banana\ncolor: yellow\nlist:\n    - first\n    - second",
             "class": ""
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/lang.js",
+            "line": 4,
+            "license": "Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.\nAvailable via the MIT or new BSD license.\nsee: http://github.com/jrburke/requirejs for details",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/lang.js",
+            "line": 78,
+            "description": "mixin({}, obj1, obj2) is allowed. If the last argument is a boolean,\nthen the source objects properties are force copied over to dest.",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/lang.js",
+            "line": 99,
+            "description": "Does a type of deep copy. Do not give it anything fancy, best\nfor basic object copies of objects that also work well as\nJSON-serialized things, or has properties pointing to functions.\nFor non-array/object values, just returns the same object.",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "copy properties from this object",
+                    "type": "Object"
+                },
+                {
+                    "name": "result",
+                    "description": "optional result object to use",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/lang.js",
+            "line": 148,
+            "description": "Helper function for iterating over an array. If the func returns\na true value, it will break out of the loop.",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/lang.js",
+            "line": 163,
+            "description": "Cycles over properties in an object and calls a function for each\nproperty value. If the function returns a truthy value, then the\niteration is stopped.",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 4,
+            "license": "Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.\nAvailable via the MIT or new BSD license.\nsee: http://github.com/jrburke/requirejs for details",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 82,
+            "description": "Pulls out dependencies from an array literal with just string members.\nIf string literals, will just return those string values in an array,\nskipping other items in the array.",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "an AST node.",
+                    "type": "Node"
+                }
+            ],
+            "return": {
+                "description": "an array of strings.\nIf null is returned, then it means the input node was not a valid\ndependency.",
+                "type": "Array"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 109,
+            "description": "Main parse function. Returns a string of any valid require or\ndefine/require.def calls as part of one JavaScript source string.",
+            "params": [
+                {
+                    "name": "moduleName",
+                    "description": "the module name that represents this file.\nIt is used to create a default define if there is not one already for the\nfile. This allows properly tracing dependencies for builds. Otherwise, if\nthe file just has a require() call, the file dependencies will not be\nproperly reflected: the file will come before its dependencies.",
+                    "type": "String"
+                },
+                {
+                    "name": "moduleName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fileName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fileContents",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "optional options. insertNeedsDefine: true will\nadd calls to require.needsDefine() if appropriate.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "JS source string or null, if no require or\ndefine/require.def calls are found.",
+                "type": "String"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 199,
+            "description": "Handles parsing a file recursively for require calls.",
+            "params": [
+                {
+                    "name": "parentNode",
+                    "description": "the AST node to start with.",
+                    "type": "Array"
+                },
+                {
+                    "name": "onMatch",
+                    "description": "function to call on a parse match.",
+                    "type": "Function"
+                },
+                {
+                    "name": "options",
+                    "description": "This is normally the build config options if\nit is passed.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 243,
+            "description": "Determines if the file defines the require/define module API.\nSpecifically, it looks for the `define.amd = ` expression.",
+            "params": [
+                {
+                    "name": "fileName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fileContents",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 265,
+            "description": "Finds require(\"\") calls inside a CommonJS anonymous module wrapped in a\ndefine(function(require, exports, module){}) wrapper. These dependencies\nwill be added to a modified define() call that lists the dependencies\non the outside of the function.",
+            "params": [
+                {
+                    "name": "fileName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fileContents:",
+                    "description": "a string of contents, or an already\nparsed AST tree.",
+                    "type": "String|Object"
+                }
+            ],
+            "return": {
+                "description": "an array of module names that are dependencies. Always\nreturns an array, but could be of length zero.",
+                "type": "Array"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 284,
+            "description": "Finds require(\"\") calls inside a CommonJS anonymous module wrapped\nin a define function, given an AST node for the definition function.",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "the AST node for the definition function.",
+                    "type": "Node"
+                }
+            ],
+            "return": {
+                "description": "and array of dependency names. Can be of zero length.",
+                "type": "Array"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 316,
+            "description": "Finds the function in define(function (require, exports, module){});",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 349,
+            "description": "Finds any config that is passed to requirejs. That includes calls to\nrequire/requirejs.config(), as well as require({}, ...) and\nrequirejs({}, ...)",
+            "params": [
+                {
+                    "name": "fileContents",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "a config details object with the following properties:\n- config: {Object} the config object found. Can be undefined if no\nconfig found.\n- range: {Array} the start index and end index in the contents where\nthe config was found. Can be undefined if no config found.\nCan throw an error if the config in the file cannot be evaluated in\na build context to valid JavaScript.",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 413,
+            "description": "for holding a declarative config.",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 424,
+            "description": "Renames require/requirejs/define calls to be ns + '.' + require/requirejs/define\nDoes *not* do .config calls though. See pragma.namespace for the complete\nset of namespace transforms. This function is used because require calls\ninside a define() call should not be renamed, so a simple regexp is not\ngood enough.",
+            "params": [
+                {
+                    "name": "fileContents",
+                    "description": "the contents to transform.",
+                    "type": "String"
+                },
+                {
+                    "name": "ns",
+                    "description": "the namespace, *not* including trailing dot.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "the fileContents with the namespace applied",
+                "type": "String"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 472,
+            "description": "Finds all dependencies specified in dependency arrays and inside\nsimplified commonjs wrappers.",
+            "params": [
+                {
+                    "name": "fileName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fileContents",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "an array of dependency strings. The dependencies\nhave not been normalized, they may be relative IDs.",
+                "type": "Array"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 494,
+            "description": "Finds only CJS dependencies, ones that are the form\nrequire('stringLiteral')",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 573,
+            "description": "If there is a named define in the file, returns the name. Does not\nscan for mulitple names, just the first one.",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 593,
+            "description": "Determines if define(), require({}|[]) or requirejs was called in the\nfile. Also finds out if define() is declared and if define.amd is called.",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 632,
+            "description": "Determines if require(''), exports.x =, module.exports =,\n__dirname, __filename are used. So, not strictly traditional CommonJS,\nalso checks for Node variants.",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 706,
+            "description": "Determines if a specific node is a valid require or define/require.def\ncall.",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "onMatch",
+                    "description": "a function to call when a match is found.\nIt is passed the match name, and the config, name, deps possible args.\nThe config, name and deps args are not normalized.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "a JS source string with the valid require/define call.\nOtherwise null.",
+                "type": "String"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 824,
+            "description": "Converts an AST node into a JS source string by extracting\nthe node's location from the given contents string. Assumes\nesprima.parse() with loc was done.",
+            "params": [
+                {
+                    "name": "contents",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "a JS source string.",
+                "type": "String"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/lib/r.js/parse.js",
+            "line": 862,
+            "description": "Extracts license comments from JS text.",
+            "params": [
+                {
+                    "name": "fileName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "contents",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "a string of license comments.",
+                "type": "String"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/requirejs.js",
+            "line": 36,
+            "description": "Parses out configurations.\n\t\tAny options the usual r.js would take.\n\n\t\toptions: {\n\t\t\t// base url where to look for module files\n\t\t\t// and relative to which the module paths will be defined\n\t\t\t// (must coincide with that defined in mainConfigFile)\n\t\t\tbasePath: './src',\n\n\t\t\tmainConfigFile: 'amdconfig.js',\n\n\t\t\tpaths: {\n\n\t\t\t},\n\t\t}\nSets configuration for reading amd-requirejs",
+            "itemtype": "method",
+            "name": "config",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/requirejs.js",
+            "line": 67,
+            "description": "Path to which relative paths will be solved against.",
+            "itemtype": "property",
+            "name": "basePath",
+            "type": "String",
+            "default": "dirname of the file object.",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/requirejs.js",
+            "line": 80,
+            "description": "Takes a path to a file in which requirejs\nconfigurations are defined\nand returns the parsed configurations object.",
+            "itemtype": "method",
+            "name": "parseRequireJsConfig",
+            "params": [
+                {
+                    "name": "fpath",
+                    "description": ""
+                }
+            ],
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/requirejs.js",
+            "line": 96,
+            "description": "Takes a module id,\ntries to find the module file path\n[1] against absolutePath\n[2] against relativePath\n[3] against a paths object\n[4] using node require.resolve strategy.",
+            "itemtype": "method",
+            "name": "resolve",
+            "params": [
+                {
+                    "name": "id",
+                    "description": ""
+                }
+            ],
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/amd/requirejs.js",
+            "line": 136,
+            "description": "Returns the ids of the modules the module\non this file depends on.\nOptionally filter the modules by origin",
+            "itemtype": "method",
+            "name": "ids",
+            "params": [
+                {
+                    "name": "origin",
+                    "description": "default: 'all'",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Array"
+            },
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/base.js",
+            "line": 13,
+            "description": "This defines base functionalities for the dependencies object",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/helpers.js",
+            "line": 3,
+            "description": "Useful regular expressions",
+            "itemtype": "property",
+            "name": "regexp",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/helpers.js",
+            "line": 13,
+            "itemtype": "method",
+            "name": "pathType",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "relative|absolute",
+                "type": "String"
+            },
+            "class": "",
+            "module": "comments"
         }
     ],
     "warnings": [
         {
-            "message": "Missing item type\n>>identifier\nkey: value\nkey0: value0\narray:\n   -v\n   -aaa\n   -aaaasddd",
-            "line": " src/comments/block.js:12"
+            "message": "unknown tag: license",
+            "line": " src/dependencies/amd/lib/r.js/lang.js:4"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:4"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:82"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:109"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:243"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:265"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:284"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:316"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:349"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:472"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:706"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:824"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:862"
+        },
+        {
+            "message": "Missing item type\n>>test-block\nname: test\nvalue: banana\ncolor: yellow\nlist:\n    - first\n    - second",
+            "line": " src/comments/block.js:6"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/dependencies/amd/lib/r.js/lang.js:4"
+        },
+        {
+            "message": "Missing item type\nmixin({}, obj1, obj2) is allowed. If the last argument is a boolean,\nthen the source objects properties are force copied over to dest.",
+            "line": " src/dependencies/amd/lib/r.js/lang.js:78"
+        },
+        {
+            "message": "Missing item type\nDoes a type of deep copy. Do not give it anything fancy, best\nfor basic object copies of objects that also work well as\nJSON-serialized things, or has properties pointing to functions.\nFor non-array/object values, just returns the same object.",
+            "line": " src/dependencies/amd/lib/r.js/lang.js:99"
+        },
+        {
+            "message": "Missing item type\nHelper function for iterating over an array. If the func returns\na true value, it will break out of the loop.",
+            "line": " src/dependencies/amd/lib/r.js/lang.js:148"
+        },
+        {
+            "message": "Missing item type\nCycles over properties in an object and calls a function for each\nproperty value. If the function returns a truthy value, then the\niteration is stopped.",
+            "line": " src/dependencies/amd/lib/r.js/lang.js:163"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:4"
+        },
+        {
+            "message": "Missing item type\nPulls out dependencies from an array literal with just string members.\nIf string literals, will just return those string values in an array,\nskipping other items in the array.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:82"
+        },
+        {
+            "message": "Missing item type\nMain parse function. Returns a string of any valid require or\ndefine/require.def calls as part of one JavaScript source string.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:109"
+        },
+        {
+            "message": "Missing item type\nHandles parsing a file recursively for require calls.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:199"
+        },
+        {
+            "message": "Missing item type\nDetermines if the file defines the require/define module API.\nSpecifically, it looks for the `define.amd = ` expression.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:243"
+        },
+        {
+            "message": "Missing item type\nFinds require(\"\") calls inside a CommonJS anonymous module wrapped in a\ndefine(function(require, exports, module){}) wrapper. These dependencies\nwill be added to a modified define() call that lists the dependencies\non the outside of the function.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:265"
+        },
+        {
+            "message": "Missing item type\nFinds require(\"\") calls inside a CommonJS anonymous module wrapped\nin a define function, given an AST node for the definition function.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:284"
+        },
+        {
+            "message": "Missing item type\nFinds the function in define(function (require, exports, module){});",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:316"
+        },
+        {
+            "message": "Missing item type\nFinds any config that is passed to requirejs. That includes calls to\nrequire/requirejs.config(), as well as require({}, ...) and\nrequirejs({}, ...)",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:349"
+        },
+        {
+            "message": "Missing item type\nfor holding a declarative config.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:413"
+        },
+        {
+            "message": "Missing item type\nRenames require/requirejs/define calls to be ns + '.' + require/requirejs/define\nDoes *not* do .config calls though. See pragma.namespace for the complete\nset of namespace transforms. This function is used because require calls\ninside a define() call should not be renamed, so a simple regexp is not\ngood enough.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:424"
+        },
+        {
+            "message": "Missing item type\nFinds all dependencies specified in dependency arrays and inside\nsimplified commonjs wrappers.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:472"
+        },
+        {
+            "message": "Missing item type\nFinds only CJS dependencies, ones that are the form\nrequire('stringLiteral')",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:494"
+        },
+        {
+            "message": "Missing item type\nIf there is a named define in the file, returns the name. Does not\nscan for mulitple names, just the first one.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:573"
+        },
+        {
+            "message": "Missing item type\nDetermines if define(), require({}|[]) or requirejs was called in the\nfile. Also finds out if define() is declared and if define.amd is called.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:593"
+        },
+        {
+            "message": "Missing item type\nDetermines if require(''), exports.x =, module.exports =,\n__dirname, __filename are used. So, not strictly traditional CommonJS,\nalso checks for Node variants.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:632"
+        },
+        {
+            "message": "Missing item type\nDetermines if a specific node is a valid require or define/require.def\ncall.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:706"
+        },
+        {
+            "message": "Missing item type\nConverts an AST node into a JS source string by extracting\nthe node's location from the given contents string. Assumes\nesprima.parse() with loc was done.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:824"
+        },
+        {
+            "message": "Missing item type\nExtracts license comments from JS text.",
+            "line": " src/dependencies/amd/lib/r.js/parse.js:862"
+        },
+        {
+            "message": "Missing item type\nThis defines base functionalities for the dependencies object",
+            "line": " src/dependencies/base.js:13"
         }
     ]
 }

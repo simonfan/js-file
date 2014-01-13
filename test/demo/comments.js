@@ -1,9 +1,8 @@
 var aaa = 'lalala';
 
-////////////
-// blocks //
-
 /**
+
+
  * >>test-block
  * name: test
  * value: banana
@@ -12,3 +11,7 @@ var aaa = 'lalala';
  *     - first
  *     - second
  */
+
+
+
+function lalalala() {}

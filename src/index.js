@@ -11,7 +11,8 @@
 'use strict';
 
 var file = require('file-object'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	resolve = require('resolve');
 
 var comments = require('./comments');
 
@@ -30,5 +31,8 @@ jsfile.proto({
 		}
 
 		return comments(this.raw, options);
-	}
+	},
 });
+
+// dependency parsers
+jsfile.proto(require('./dependencies'));
