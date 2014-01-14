@@ -1,7 +1,6 @@
 'use strict';
 
-var _ = require('lodash'),
-	mapo = require('mapo');
+var _ = require('lodash');
 
 /**
  * >>test-block
