@@ -15,7 +15,7 @@ var jsfile = require('../index');
  */
 var dependencies = module.exports = subject(function dependencies(filename, filedata) {
 
-	filedata = filedata || fs.readFileSync(filename, { encoding: 'utf-8' });
+	filedata = filedata || fs.readFileSync(filename, { encoding: 'utf8' });
 
 	this.path = filename;
 	this.src = filedata;
