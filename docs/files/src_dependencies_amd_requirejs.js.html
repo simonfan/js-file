@@ -176,7 +176,7 @@ AMD.proto({
 	 * @param fpath
 	 */
 	parseRequireJsConfig: function parseRequireJsConfig(fpath) {
-		var src = fs.readFileSync(fpath, { encoding: &#x27;utf-8&#x27; });
+		var src = fs.readFileSync(fpath, { encoding: &#x27;utf8&#x27; });
 
 		config = rjsparse.findConfig(src).config;
 

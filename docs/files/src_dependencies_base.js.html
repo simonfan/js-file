@@ -95,7 +95,8 @@ var path = require(&#x27;path&#x27;),
 
 var subject = require(&#x27;subject&#x27;),
 	resolve = require(&#x27;resolve&#x27;),
-	_ = require(&#x27;lodash&#x27;);
+	_ = require(&#x27;lodash&#x27;),
+	parser = require(&#x27;argument-parser&#x27;);
 
 // CAREFUL! circular dependency here..
 var jsfile = require(&#x27;../index&#x27;);
@@ -105,7 +106,7 @@ var jsfile = require(&#x27;../index&#x27;);
  */
 var dependencies = module.exports = subject(function dependencies(filename, filedata) {
 
-	filedata = filedata || fs.readFileSync(filename, { encoding: &#x27;utf-8&#x27; });
+	filedata = filedata || fs.readFileSync(filename, { encoding: &#x27;utf8&#x27; });
 
 	this.path = filename;
 	this.src = filedata;
@@ -116,11 +117,21 @@ var dependencies = module.exports = subject(function dependencies(filename, file
 dependencies.proto({
 	// ids: function to get the &#x27;dependencies&#x27;
 
-	filenames: function filenames(origin, maxDepth) {
-		maxDepth = typeof origin === &#x27;number&#x27; || typeof origin === &#x27;boolean&#x27; ? origin : maxDepth ? maxDepth : 1;
-		origin = typeof origin === &#x27;string&#x27; ? origin : &#x27;all&#x27;;
+	filenames: function filenames() {
 
-		var ids = this.ids(origin),
+		var args = parser(arguments);
+
+		args.interface([&#x27;string&#x27;, &#x27;number|boolean&#x27;], [&#x27;origin&#x27;, &#x27;maxDepth&#x27;])
+			.interface([&#x27;number|boolean&#x27;], [&#x27;maxDepth&#x27;])
+			.interface([&#x27;string&#x27;], [&#x27;origin&#x27;])
+			.defaults({
+				origin: &#x27;all&#x27;,
+				maxDepth: 1
+			});
+
+		args = args.evaluate();
+
+		var ids = this.ids(args.origin),
 			immediate = ids.map(this.resolve.bind(this));
 
 		// remove false values from immediate
@@ -128,19 +139,19 @@ dependencies.proto({
 		// core modules are resolved to false paths.
 		immediate = _.compact(immediate);
 
-		if (maxDepth &gt; 1 || maxDepth === true) {
+		if (args.maxDepth &gt; 1 || args.maxDepth === true) {
 
 			var next = _.clone(immediate);
 
 			// reduce maxDepth
-			maxDepth = typeof maxDepth === &#x27;number&#x27; ? maxDepth -- : maxDepth;
+			args.maxDepth = typeof args.maxDepth === &#x27;number&#x27; ? args.maxDepth -- : args.maxDepth;
 
 			// go deeper
 			_.each(immediate, function (fname) {
 				var file = jsfile(fname),
 					deps = file.dependencies(&#x27;cjs-node&#x27;);
 
-				next = _.union(next, deps.filenames(origin, maxDepth));
+				next = _.union(next, deps.filenames(args.origin, args.maxDepth));
 			});
 
 			return next;

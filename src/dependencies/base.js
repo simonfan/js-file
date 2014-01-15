@@ -5,7 +5,8 @@ var path = require('path'),
 
 var subject = require('subject'),
 	resolve = require('resolve'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	parser = require('argument-parser');
 
 // CAREFUL! circular dependency here..
 var jsfile = require('../index');
@@ -26,11 +27,20 @@ var dependencies = module.exports = subject(function dependencies(filename, file
 dependencies.proto({
 	// ids: function to get the 'dependencies'
 
-	filenames: function filenames(origin, maxDepth) {
-		maxDepth = typeof origin === 'number' || typeof origin === 'boolean' ? origin : maxDepth ? maxDepth : 1;
-		origin = typeof origin === 'string' ? origin : 'all';
+	filenames: function filenames() {
 
-		var ids = this.ids(origin),
+		var args = parser(arguments);
+
+		args.interface(['string', 'number|boolean|undefined'], ['origin', 'maxDepth'])
+			.interface(['number|boolean'], ['maxDepth'])
+			.defaults({
+				origin: 'all',
+				maxDepth: 1
+			});
+
+		args = args.evaluate();
+
+		var ids = this.ids(args.origin),
 			immediate = ids.map(this.resolve.bind(this));
 
 		// remove false values from immediate
@@ -38,19 +48,19 @@ dependencies.proto({
 		// core modules are resolved to false paths.
 		immediate = _.compact(immediate);
 
-		if (maxDepth > 1 || maxDepth === true) {
+		if (args.maxDepth > 1 || args.maxDepth === true) {
 
 			var next = _.clone(immediate);
 
 			// reduce maxDepth
-			maxDepth = typeof maxDepth === 'number' ? maxDepth -- : maxDepth;
+			args.maxDepth = typeof args.maxDepth === 'number' ? args.maxDepth -- : args.maxDepth;
 
 			// go deeper
 			_.each(immediate, function (fname) {
 				var file = jsfile(fname),
 					deps = file.dependencies('cjs-node');
 
-				next = _.union(next, deps.filenames(origin, maxDepth));
+				next = _.union(next, deps.filenames(args.origin, args.maxDepth));
 			});
 
 			return next;

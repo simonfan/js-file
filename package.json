@@ -1,7 +1,7 @@
 {
   "name": "js-file",
   "main": "./src",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Introspect .js files.",
   "repository": {
     "type": "git",
@@ -15,7 +15,8 @@
     "resolve": "~0.6.1",
     "detective": "~2.2.0",
     "esprima": "~1.0.4",
-    "amdefine": "~0.1.0"
+    "amdefine": "~0.1.0",
+    "argument-parser": "~0.1.1"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

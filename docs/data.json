@@ -93,7 +93,7 @@
     "classitems": [
         {
             "file": "src/comments/block.js",
-            "line": 6,
+            "line": 5,
             "description": ">>test-block\nname: test\nvalue: banana\ncolor: yellow\nlist:\n    - first\n    - second",
             "class": ""
         },
@@ -565,7 +565,7 @@
         },
         {
             "file": "src/dependencies/base.js",
-            "line": 13,
+            "line": 14,
             "description": "This defines base functionalities for the dependencies object",
             "class": "",
             "module": "comments"
@@ -654,7 +654,7 @@
         },
         {
             "message": "Missing item type\n>>test-block\nname: test\nvalue: banana\ncolor: yellow\nlist:\n    - first\n    - second",
-            "line": " src/comments/block.js:6"
+            "line": " src/comments/block.js:5"
         },
         {
             "message": "Missing item type",
@@ -754,7 +754,7 @@
         },
         {
             "message": "Missing item type\nThis defines base functionalities for the dependencies object",
-            "line": " src/dependencies/base.js:13"
+            "line": " src/dependencies/base.js:14"
         }
     ]
 }
