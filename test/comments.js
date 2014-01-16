@@ -6,55 +6,51 @@ var should = require('should');
 
 var jsfile = require('.././src');
 
-describe('jsfile basics', function () {
+var _ = require('lodash');
 
-	it('initializes :{-', function () {
-		var file = jsfile(path.join(__dirname, 'demo/comments'));
+describe('comments = file.comments([options])', function () {
 
-		file.should.be.type('object');
+	beforeEach(function () {
+		this.commentsFile = jsfile(path.join(__dirname, 'demo/comments'));
 	});
 
-	describe('file = jsfile(fpath {String})', function () {
+	describe('comments.block/blocks', function () {
+		it('comments.block(name {String})', function () {
+			var re = this.commentsFile.comments().blockRegExp('test-block');
 
-		beforeEach(function () {
-			this.commentsFile = jsfile(path.join(__dirname, 'demo/comments'));
+			re.test(this.commentsFile.raw).should.be.true;
 		});
 
-		it('reads', function () {
-			this.commentsFile
-				.readSync()
-				.data().should.be.type('string');
+		it('comments.blocks(name {String})', function () {
+			var blocks = this.commentsFile.comments().blocks('to-do');
+
+			blocks.length.should.eql(2);
 		});
 
-		describe('file.comment', function () {
+		it('if no block is matched, returns false', function () {
+			var block = this.commentsFile.comments().block('non-existent-block'),
+				yamlBlock = this.commentsFile.comments().yml('non-existent-yaml');
 
-			it('can create regexp for block comments', function () {
-				var re = this.commentsFile.comments().blockRegExp('test-block');
+			block.should.be.false;
+			yamlBlock.should.be.false;
+		});
+	})
 
-				re.test(this.commentsFile.raw).should.be.true;
-			})
+	describe('comments.yml/ymls', function () {
 
-			it('can parse comment blocks', function () {
-				var a = this.commentsFile.comments().block('test-block');
+		it('comments.yml(name {String})', function () {
+			var yml = this.commentsFile.comments().yaml('test-block');
 
-				a.split('\n').length
-					.should.equal(7)
-			})
+			yml.value.should.equal('banana');
+		});
 
-			it('can parse yaml formatted blocks', function () {
-				var yml = this.commentsFile.comments().yaml('test-block');
+		it('comments.ymls(name {String})', function () {
+			var ymls = this.commentsFile.comments().ymls('to-do');
 
-				yml.value.should.equal('banana');
-			})
+			ymls.length.should.equal(2);
 
-			it('if no block is matched, returns false', function () {
-				var block = this.commentsFile.comments().block('non-existent-block'),
-					yamlBlock = this.commentsFile.comments().yml('non-existent-yaml');
-
-				block.should.be.false;
-				yamlBlock.should.be.false;
-			});
-
+			_.first(ymls).name.should.equal('write lalalala')
 		});
 	});
+
 });

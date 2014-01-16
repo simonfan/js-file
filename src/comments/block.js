@@ -46,3 +46,11 @@ exports.block = function block(name) {
 
 	return matches && matches.length > 0 ? this._blockTrim(name, matches[0]) : false;
 };
+
+exports.blocks = function blocks(name) {
+	var matches = this.blockMatch(name);
+
+	return matches && matches.length > 0 ?
+		_.map(matches, _.partial(this._blockTrim, name).bind(this)) :
+		false;
+};
