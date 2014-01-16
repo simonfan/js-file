@@ -38,7 +38,7 @@ describe('jsfile basics', function () {
 				var a = this.commentsFile.comments().block('test-block');
 
 				a.split('\n').length
-					.should.equal(6)
+					.should.equal(7)
 			})
 
 			it('can parse yaml formatted blocks', function () {
@@ -46,6 +46,14 @@ describe('jsfile basics', function () {
 
 				yml.value.should.equal('banana');
 			})
+
+			it('if no block is matched, returns false', function () {
+				var block = this.commentsFile.comments().block('non-existent-block'),
+					yamlBlock = this.commentsFile.comments().yml('non-existent-yaml');
+
+				block.should.be.false;
+				yamlBlock.should.be.false;
+			});
 
 		});
 	});

@@ -2,6 +2,11 @@
 
 var YAML = require('js-yaml');
 
-exports.yaml = function (name) {
-	return YAML.load(this.block(name));
+exports.yaml = function yaml(name) {
+	var block = this.block(name);
+
+	return block ? YAML.load(block) : false;
 };
+
+// alias
+exports.yml = exports.yaml;

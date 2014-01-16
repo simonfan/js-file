@@ -12,7 +12,7 @@ var _ = require('lodash');
  *     - second
  */
 
-exports.blockBorder = ' \\* ';
+exports.blockBorder = ' \\* ?';
 
 	// regexp partials
 var n = '(\n|\r|\n\r)',
@@ -44,5 +44,5 @@ exports._blockTrim = function _blockTrim(name, s) {
 exports.block = function block(name) {
 	var	matches = this.blockMatch(name);
 
-	return matches.length > 0 ? this._blockTrim(name, matches[0]) : false;
+	return matches && matches.length > 0 ? this._blockTrim(name, matches[0]) : false;
 };
