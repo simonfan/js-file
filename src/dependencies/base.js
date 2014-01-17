@@ -31,17 +31,24 @@ dependencies.proto({
 
 		var args = parser(arguments);
 
-		args.interface(['string', 'number|boolean|undefined'], ['origin', 'maxDepth'])
-			.interface(['number|boolean'], ['maxDepth'])
+		args.interface(['string|undefined', 'number|boolean|undefined', 'string|undefined'], ['origin', 'maxDepth', 'base'])
+			.interface(['string|undefined', 'string|undefined'], ['origin', 'base'])
+			.interface(['number|boolean', 'string|undefined'], ['maxDepth', 'base'])
 			.defaults({
 				origin: 'all',
-				maxDepth: 1
+				maxDepth: 1,
+				base: false			// no base by default
 			});
+
 
 		args = args.evaluate();
 
 		var ids = this.ids(args.origin),
-			immediate = ids.map(this.resolve.bind(this));
+			immediate = ids.map(function (id) {
+				var fpath = this.resolve(id);
+
+				return fpath && args.base ? path.relative(args.base, fpath) : fpath;
+			}.bind(this));
 
 		// remove false values from immediate
 		// NODE CORE modules are filtered here, this.resolve.
@@ -50,17 +57,19 @@ dependencies.proto({
 
 		if (args.maxDepth > 1 || args.maxDepth === true) {
 
-			var next = _.clone(immediate);
-
-			// reduce maxDepth
-			args.maxDepth = typeof args.maxDepth === 'number' ? args.maxDepth -- : args.maxDepth;
+			var next = _.clone(immediate),
+				maxDepth = typeof args.maxDepth === 'number' ? args.maxDepth - 1 : args.maxDepth;
 
 			// go deeper
 			_.each(immediate, function (fname) {
+
+				// if basepath was defined...
+				fname = args.base ? path.join(args.base, fname) : fname;
+
 				var file = jsfile(fname),
 					deps = file.dependencies('cjs-node');
 
-				next = _.union(next, deps.filenames(args.origin, args.maxDepth));
+				next = _.union(next, deps.filenames(args.origin, maxDepth));
 			});
 
 			return next;
@@ -83,10 +92,4 @@ dependencies.proto({
 
 		return res;
 	},
-
-	tree: function tree(options) {
-		options = options || {};
-
-		var immediate = this.ids();
-	}
 });

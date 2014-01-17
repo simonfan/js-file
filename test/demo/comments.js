@@ -26,7 +26,9 @@ var aaa = 'lalala';
  * difficulty: 3
  * etc: 2
  */
-function lalalala() {}
+function lalalala() {
+
+}
 
 /**
  * >>to-do

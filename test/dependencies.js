@@ -3,7 +3,8 @@
 var path = require('path');
 
 var should = require('should'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	commondir = require('commondir');
 
 var jsfile = require('.././src');
 
@@ -59,14 +60,49 @@ describe('jsfile basics', function () {
 			});
 		});
 
-		it('depFnames = deps.filenames([modOrigin = all], [maxDepth = 1])', function () {
-			var fnames = this.cjsDeps.filenames('external');
+		describe('depFnames = deps.filenames([modOrigin = all], [maxDepth = 1], [basePath = false])', function () {
 
-			fnames.length.should.eql(2);
-		});
+			it('depFnames = deps.filenames(origin) -> basepath = false, maxDepth = 1', function () {
+				var externalFnames = this.cjsDeps.filenames('external');
 
-		it('allDepFnames = deps.filenames(true)', function () {
-			var fnames = this.cjsDeps.filenames(true);
+				externalFnames.length.should.eql(2);
+			});
+
+			it('allDepFnames = deps.filenames(maxDepth) -> origin = \'all\', basepath = false', function () {
+				var fnames = this.cjsDeps.filenames(true);
+
+				fnames.length.should.eql(7);
+			});
+
+
+			it('depFnames = deps.filenames(origin, basepath) -> maxDepth = 1', function () {
+				// using basepath
+				var basepath = path.join(__dirname, 'demo/cjs'),
+					externalRelativeFnames = this.cjsDeps.filenames('external', basepath);
+
+				externalRelativeFnames.length.should.eql(2);
+
+				// base path should not be in the externalRelativeFnames
+				_.each(externalRelativeFnames, function (fname) {
+					var match = fname.match(basepath);
+
+					should(match).be.not.ok;
+				});
+			});
+
+			it('depFnames = deps.filenames(maxDepth, basepath) -> origin = \'all\'', function () {
+				var basepath = path.join(__dirname, 'demo/cjs'),
+					externalRelativeFnames = this.cjsDeps.filenames(1, basepath);
+
+				externalRelativeFnames.length.should.eql(3);
+
+				// base path should not be in the externalRelativeFnames
+				_.each(externalRelativeFnames, function (fname) {
+					var match = fname.match(basepath);
+
+					should(match).be.not.ok;
+				});
+			});
 		});
 	});
 

@@ -26,7 +26,7 @@ var CJS = module.exports = base.extend({
 
 		var deps = _.uniq(detective(this.src));
 
-		return origin ? _.filter(deps, function (dep) {
+		return (origin && origin !== 'all') ? _.filter(deps, function (dep) {
 			return this.moduleOrigin(dep) === origin;
 		}.bind(this)) : deps;
 	},
