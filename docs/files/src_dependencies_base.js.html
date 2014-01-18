@@ -104,12 +104,15 @@ var jsfile = require(&#x27;../index&#x27;);
 /**
  * This defines base functionalities for the dependencies object
  */
-var dependencies = module.exports = subject(function dependencies(filename, filedata) {
+var dependencies = module.exports = subject(function dependencies(filename, filedata, options) {
 
 	filedata = filedata || fs.readFileSync(filename, { encoding: &#x27;utf8&#x27; });
 
 	this.path = filename;
 	this.src = filedata;
+
+	// save options directly to the dependencies object.
+	this.options = _.extend(this.options, options);
 });
 
 
@@ -117,48 +120,60 @@ var dependencies = module.exports = subject(function dependencies(filename, file
 dependencies.proto({
 	// ids: function to get the &#x27;dependencies&#x27;
 
+	options: {
+		origin: &#x27;all&#x27;,
+		maxDepth: 1,
+		base: void(0)
+	},
+
 	filenames: function filenames() {
 
-		var args = parser(arguments);
-
-		args.interface([&#x27;string&#x27;, &#x27;number|boolean&#x27;], [&#x27;origin&#x27;, &#x27;maxDepth&#x27;])
-			.interface([&#x27;number|boolean&#x27;], [&#x27;maxDepth&#x27;])
-			.interface([&#x27;string&#x27;], [&#x27;origin&#x27;])
-			.defaults({
-				origin: &#x27;all&#x27;,
-				maxDepth: 1
-			});
+		// [1] parse arguments.
+		var args = parser(arguments)
+			.interface([&#x27;object&#x27;], function (options) { return options; })
+			.interface([&#x27;string|undefined&#x27;, &#x27;number|boolean|undefined&#x27;, &#x27;string|undefined&#x27;], [&#x27;origin&#x27;, &#x27;maxDepth&#x27;, &#x27;base&#x27;])
+			.interface([&#x27;string|undefined&#x27;, &#x27;string|undefined&#x27;], [&#x27;origin&#x27;, &#x27;base&#x27;])
+			.interface([&#x27;number|boolean&#x27;, &#x27;string|undefined&#x27;], [&#x27;maxDepth&#x27;, &#x27;base&#x27;])
+			.defaults(this.options);
 
 		args = args.evaluate();
 
+		// [2] retrieve immediate dependency files.
 		var ids = this.ids(args.origin),
-			immediate = ids.map(this.resolve.bind(this));
+			// fnames has only ABSOLUTE paths.
+			fnames = ids.map(this.resolve.bind(this));
 
-		// remove false values from immediate
-		// NODE CORE modules are filtered here, this.resolve.
-		// core modules are resolved to false paths.
-		immediate = _.compact(immediate);
+		// remove false values from fnames
+		//     NODE CORE modules are filtered here, this.resolve.
+		//     core modules are resolved to false paths.
+		fnames = _.compact(fnames);
 
+
+		// [3] create an answer object
+		//     that has only paths relative to the base.
+		var res = !args.base ? fnames : _.map(fnames, function (fname) {
+			return path.relative(args.base, fname);
+		});
+
+		// [4] if required, go recursive.
 		if (args.maxDepth &gt; 1 || args.maxDepth === true) {
 
-			var next = _.clone(immediate);
-
-			// reduce maxDepth
-			args.maxDepth = typeof args.maxDepth === &#x27;number&#x27; ? args.maxDepth -- : args.maxDepth;
+			// calculate maxDepth
+			args.maxDepth = typeof args.maxDepth === &#x27;number&#x27; ?
+				args.maxDepth - 1 : // number
+				args.maxDepth;		// boolean
 
 			// go deeper
-			_.each(immediate, function (fname) {
+			_.each(fnames, function (fname) {
+
 				var file = jsfile(fname),
-					deps = file.dependencies(&#x27;cjs-node&#x27;);
+					deps = file.dependencies(this.moduleFormat);
 
-				next = _.union(next, deps.filenames(args.origin, args.maxDepth));
-			});
-
-			return next;
-
-		} else {
-			return immediate;
+				res = _.union(res, deps.filenames(args));
+			}.bind(this));
 		}
+
+		return res;
 	},
 
 	files: function files() {
@@ -174,12 +189,6 @@ dependencies.proto({
 
 		return res;
 	},
-
-	tree: function tree(options) {
-		options = options || {};
-
-		var immediate = this.ids();
-	}
 });
 
     </pre>

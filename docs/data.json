@@ -489,7 +489,7 @@
         },
         {
             "file": "src/dependencies/amd/requirejs.js",
-            "line": 36,
+            "line": 38,
             "description": "Parses out configurations.\n\t\tAny options the usual r.js would take.\n\n\t\toptions: {\n\t\t\t// base url where to look for module files\n\t\t\t// and relative to which the module paths will be defined\n\t\t\t// (must coincide with that defined in mainConfigFile)\n\t\t\tbasePath: './src',\n\n\t\t\tmainConfigFile: 'amdconfig.js',\n\n\t\t\tpaths: {\n\n\t\t\t},\n\t\t}\nSets configuration for reading amd-requirejs",
             "itemtype": "method",
             "name": "config",
@@ -505,7 +505,7 @@
         },
         {
             "file": "src/dependencies/amd/requirejs.js",
-            "line": 67,
+            "line": 69,
             "description": "Path to which relative paths will be solved against.",
             "itemtype": "property",
             "name": "basePath",
@@ -516,7 +516,7 @@
         },
         {
             "file": "src/dependencies/amd/requirejs.js",
-            "line": 80,
+            "line": 82,
             "description": "Takes a path to a file in which requirejs\nconfigurations are defined\nand returns the parsed configurations object.",
             "itemtype": "method",
             "name": "parseRequireJsConfig",
@@ -531,7 +531,7 @@
         },
         {
             "file": "src/dependencies/amd/requirejs.js",
-            "line": 96,
+            "line": 98,
             "description": "Takes a module id,\ntries to find the module file path\n[1] against absolutePath\n[2] against relativePath\n[3] against a paths object\n[4] using node require.resolve strategy.",
             "itemtype": "method",
             "name": "resolve",
@@ -546,7 +546,7 @@
         },
         {
             "file": "src/dependencies/amd/requirejs.js",
-            "line": 136,
+            "line": 138,
             "description": "Returns the ids of the modules the module\non this file depends on.\nOptionally filter the modules by origin",
             "itemtype": "method",
             "name": "ids",

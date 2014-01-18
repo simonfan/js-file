@@ -106,7 +106,6 @@ describe('jsfile basics', function () {
 		});
 	});
 
-
 	describe('deps = file.dependencies(\'amd\')', function () {
 
 		beforeEach(function () {
@@ -128,6 +127,28 @@ describe('jsfile basics', function () {
 
 			dependencies.ids().length.should.eql(2);
 		});
+	});
+
+	describe('deps = file.dependencies({format}, {options})', function () {
+		beforeEach(function () {
+
+			var p = path.join(__dirname, 'demo/cjs/src/index');
+
+			this.cjsFile = jsfile(p);
+
+			this.internalDepsUpTo2nd = this.cjsFile.dependencies('cjs', {
+				origin: 'internal',
+				maxDepth: 2,
+				base: path.join(__dirname, 'demo/cjs'),
+			});
+		});
+
+		it('allDepFnames = deps.filenames(), using the options defined at initialization', function () {
+			var filenames = this.internalDepsUpTo2nd.filenames();
+
+			filenames.length.should.be.eql(3);
+		});
+
 	});
 
 });

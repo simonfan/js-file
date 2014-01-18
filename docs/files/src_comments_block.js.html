@@ -102,7 +102,7 @@ var _ = require(&#x27;lodash&#x27;);
  *     - second
  */
 
-exports.blockBorder = &#x27; \\* &#x27;;
+exports.blockBorder = &#x27; \\* ?&#x27;;
 
 	// regexp partials
 var n = &#x27;(\n|\r|\n\r)&#x27;,
@@ -134,7 +134,15 @@ exports._blockTrim = function _blockTrim(name, s) {
 exports.block = function block(name) {
 	var	matches = this.blockMatch(name);
 
-	return matches.length &gt; 0 ? this._blockTrim(name, matches[0]) : false;
+	return matches &amp;&amp; matches.length &gt; 0 ? this._blockTrim(name, matches[0]) : false;
+};
+
+exports.blocks = function blocks(name) {
+	var matches = this.blockMatch(name);
+
+	return matches &amp;&amp; matches.length &gt; 0 ?
+		_.map(matches, _.partial(this._blockTrim, name).bind(this)) :
+		false;
 };
 
     </pre>

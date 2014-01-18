@@ -5,7 +5,7 @@ var _ = require('lodash');
 var cjsNode = require('./cjs/node'),
 	amdRequireJs = require('./amd/requirejs');
 
-var formats = {
+var builders = {
 	'cjs-node': cjsNode,
 	cjs: cjsNode,
 
@@ -19,9 +19,13 @@ var formats = {
 exports.dependencies = function dependencies(format) {
 	format = format || 'cjs';
 
+	// retrieve the building function
+	// and partial set the path and src arguments.
+	var builder = _.partial(builders[format], this.path, this.src);
+
+	// remove the format from the args.
 	var args = Array.prototype.slice.call(arguments);
 	args.shift();
 
-	return _.partial(formats[format], this.path, this.src)
-			.apply(this, args);
+	return builder.apply(this, args);
 };

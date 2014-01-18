@@ -33,6 +33,8 @@ var re = {
 
 AMD.proto({
 
+	moduleFormat: 'amd-requirejs',
+
 	/**
 	 * Parses out configurations.
 		Any options the usual r.js would take.

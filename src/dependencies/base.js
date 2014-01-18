@@ -14,12 +14,15 @@ var jsfile = require('../index');
 /**
  * This defines base functionalities for the dependencies object
  */
-var dependencies = module.exports = subject(function dependencies(filename, filedata) {
+var dependencies = module.exports = subject(function dependencies(filename, filedata, options) {
 
 	filedata = filedata || fs.readFileSync(filename, { encoding: 'utf8' });
 
 	this.path = filename;
 	this.src = filedata;
+
+	// save options directly to the dependencies object.
+	this.options = _.extend(this.options, options);
 });
 
 
@@ -27,56 +30,60 @@ var dependencies = module.exports = subject(function dependencies(filename, file
 dependencies.proto({
 	// ids: function to get the 'dependencies'
 
+	options: {
+		origin: 'all',
+		maxDepth: 1,
+		base: void(0)
+	},
+
 	filenames: function filenames() {
 
-		var args = parser(arguments);
-
-		args.interface(['string|undefined', 'number|boolean|undefined', 'string|undefined'], ['origin', 'maxDepth', 'base'])
+		// [1] parse arguments.
+		var args = parser(arguments)
+			.interface(['object'], function (options) { return options; })
+			.interface(['string|undefined', 'number|boolean|undefined', 'string|undefined'], ['origin', 'maxDepth', 'base'])
 			.interface(['string|undefined', 'string|undefined'], ['origin', 'base'])
 			.interface(['number|boolean', 'string|undefined'], ['maxDepth', 'base'])
-			.defaults({
-				origin: 'all',
-				maxDepth: 1,
-				base: false			// no base by default
-			});
-
+			.defaults(this.options);
 
 		args = args.evaluate();
 
+		// [2] retrieve immediate dependency files.
 		var ids = this.ids(args.origin),
-			immediate = ids.map(function (id) {
-				var fpath = this.resolve(id);
+			// fnames has only ABSOLUTE paths.
+			fnames = ids.map(this.resolve.bind(this));
 
-				return fpath && args.base ? path.relative(args.base, fpath) : fpath;
-			}.bind(this));
+		// remove false values from fnames
+		//     NODE CORE modules are filtered here, this.resolve.
+		//     core modules are resolved to false paths.
+		fnames = _.compact(fnames);
 
-		// remove false values from immediate
-		// NODE CORE modules are filtered here, this.resolve.
-		// core modules are resolved to false paths.
-		immediate = _.compact(immediate);
 
+		// [3] create an answer object
+		//     that has only paths relative to the base.
+		var res = !args.base ? fnames : _.map(fnames, function (fname) {
+			return path.relative(args.base, fname);
+		});
+
+		// [4] if required, go recursive.
 		if (args.maxDepth > 1 || args.maxDepth === true) {
 
-			var next = _.clone(immediate),
-				maxDepth = typeof args.maxDepth === 'number' ? args.maxDepth - 1 : args.maxDepth;
+			// calculate maxDepth
+			args.maxDepth = typeof args.maxDepth === 'number' ?
+				args.maxDepth - 1 : // number
+				args.maxDepth;		// boolean
 
 			// go deeper
-			_.each(immediate, function (fname) {
-
-				// if basepath was defined...
-				fname = args.base ? path.join(args.base, fname) : fname;
+			_.each(fnames, function (fname) {
 
 				var file = jsfile(fname),
-					deps = file.dependencies('cjs-node');
+					deps = file.dependencies(this.moduleFormat);
 
-				next = _.union(next, deps.filenames(args.origin, maxDepth));
-			});
-
-			return next;
-
-		} else {
-			return immediate;
+				res = _.union(res, deps.filenames(args));
+			}.bind(this));
 		}
+
+		return res;
 	},
 
 	files: function files() {
