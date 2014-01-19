@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/helpers.js - js-file</title>
+    <title>src/comments/yaml.js - js-file</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -40,6 +40,12 @@
 
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/builders.html">builders</a></li>
+            
+                <li><a href="../classes/comments.html">comments</a></li>
+            
+                <li><a href="../classes/dependencies.html">dependencies</a></li>
             
             </ul>
 
@@ -84,30 +90,48 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/helpers.js</h1>
+                        <h1 class="file-heading">File: src/comments/yaml.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 
+var YAML = require(&#x27;js-yaml&#x27;),
+	_ = require(&#x27;lodash&#x27;);
+
 /**
- * Useful regular expressions
- * @property regexp
+ * Fetches a single block of yaml-formatted data.
+ *
+ * @method yaml
+ * @param name {String}
+ * @param [multiple] {Boolean}
  */
-exports.regexp = {
-	relativePath: /^(.|..)\//,
-	absolutePath: /^\//,
-	jsExt: /\.js$/,
+exports.yaml = function yaml(name, multiple) {
+	if (multiple) {
+		return this.yamls(name);
+	}
+
+	var block = this.block(name);
+
+	return block ? YAML.load(block) : false;
 };
 
 /**
- * @method pathType
- * @param path {String}
- * @return relative|absolute {String}
+ * Fetches multiple blocks of yaml-formatted data.
+ *
+ * @method yamls
+ * @param name {String}
  */
-exports.pathType = function pathType(p) {
+exports.yamls = function yamls(name) {
+	var blocks = this.blocks(name);
 
+	return blocks ? _.map(blocks, YAML.load) : false;
 };
+
+// aliases
+exports.yml = exports.yaml;
+exports.ymls = exports.yamls;
+
     </pre>
 </div>
 

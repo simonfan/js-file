@@ -41,6 +41,12 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/builders.html">builders</a></li>
+            
+                <li><a href="../classes/comments.html">comments</a></li>
+            
+                <li><a href="../classes/dependencies.html">dependencies</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -95,26 +101,14 @@ var _ = require(&#x27;lodash&#x27;);
 var cjsNode = require(&#x27;./cjs/node&#x27;),
 	amdRequireJs = require(&#x27;./amd/requirejs&#x27;);
 
-// just an interface
-// the real thing is at require(&#x27;./base&#x27;), require(&#x27;./cjs&#x27;) and require(&#x27;./amd&#x27;).
-exports.dependencies = function dependencies(format) {
-	format = format || &#x27;cjs&#x27;;
-
-	// retrieve the building function
-	// and partial set the path and src arguments.
-	var builder = _.partial(this.dependencies.builders[format], this);
-
-	// remove the format from the args.
-	var args = Array.prototype.slice.call(arguments);
-	args.shift();
-
-	return builder.apply(this, args);
-};
-
 /**
  * Stores dependency object builders.
+ *
+ * @class builders
+ * @static
+ * @private
  */
-exports.dependencies.builders = {
+var builders = {
 	&#x27;cjs-node&#x27;: cjsNode,
 	cjs: cjsNode,
 
@@ -122,13 +116,29 @@ exports.dependencies.builders = {
 	amd: amdRequireJs
 };
 
-/**
- * Sets a builder.
- */
-exports.dependencies.format = function format(name, builder) {
-	this.builders[name] = builder;
 
-	return this;
+/**
+ * This is an &#x27;interface&#x27; method that builds a &#x27;dependencies&#x27; object.
+ *
+ * @method dependencies
+ * @param format
+ *     module format (cjs, amd, ...)
+ *     defaults to &#x27;cjs&#x27;
+ * @param options
+ *     options to be passed to the dependencies object constructor
+ */
+exports.dependencies = function dependencies(format, options) {
+	format = format || &#x27;cjs&#x27;;
+
+	// retrieve the building function
+	// and partial set the path and src arguments.
+	var builder = _.partial(builders[format], this);
+
+	// remove the format from the args.
+	var args = Array.prototype.slice.call(arguments);
+	args.shift();
+
+	return builder.apply(this, args);
 };
 
     </pre>

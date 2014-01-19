@@ -3,12 +3,29 @@
 var YAML = require('js-yaml'),
 	_ = require('lodash');
 
-exports.yaml = function yaml(name) {
+/**
+ * Fetches a single block of yaml-formatted data.
+ *
+ * @method yaml
+ * @param name {String}
+ * @param [multiple] {Boolean}
+ */
+exports.yaml = function yaml(name, multiple) {
+	if (multiple) {
+		return this.yamls(name);
+	}
+
 	var block = this.block(name);
 
 	return block ? YAML.load(block) : false;
 };
 
+/**
+ * Fetches multiple blocks of yaml-formatted data.
+ *
+ * @method yamls
+ * @param name {String}
+ */
 exports.yamls = function yamls(name) {
 	var blocks = this.blocks(name);
 

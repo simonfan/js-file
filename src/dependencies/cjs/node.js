@@ -22,8 +22,6 @@ var regexp = {
 // the CJS
 var CJS = module.exports = base.extend({
 
-	moduleFormat: 'cjs-node',
-
 	ids: function ids(origin) {
 
 		var deps = _.uniq(detective(this.src));

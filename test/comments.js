@@ -31,8 +31,8 @@ describe('comments = file.comments([options])', function () {
 			var block = this.commentsFile.comments().block('non-existent-block'),
 				yamlBlock = this.commentsFile.comments().yml('non-existent-yaml');
 
-			block.should.be.false;
-			yamlBlock.should.be.false;
+			should(block).not.be.ok;
+			should(yamlBlock).not.be.ok;
 		});
 	})
 

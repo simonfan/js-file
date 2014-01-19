@@ -16,6 +16,15 @@
             "modules": {
                 "comments": 1
             },
+            "classes": {
+                "comments": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/comments/yaml.js": {
+            "name": "src/comments/yaml.js",
+            "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
@@ -44,21 +53,18 @@
         "src/dependencies/base.js": {
             "name": "src/dependencies/base.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "dependencies": 1
+            },
             "fors": {},
             "namespaces": {}
         },
         "src/dependencies/index.js": {
             "name": "src/dependencies/index.js",
             "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/helpers.js": {
-            "name": "src/helpers.js",
-            "modules": {},
-            "classes": {},
+            "classes": {
+                "builders": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -76,12 +82,16 @@
         "comments": {
             "name": "comments",
             "submodules": {},
-            "classes": {},
+            "classes": {
+                "comments": 1,
+                "dependencies": 1,
+                "builders": 1
+            },
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src/comments/index.js",
-            "line": 3,
+            "file": "src/dependencies/index.js",
+            "line": 8,
             "description": "Holds functionality related to parsing commentss."
         },
         "jsfile": {
@@ -96,26 +106,265 @@
             "description": "CJS module."
         }
     },
-    "classes": {},
+    "classes": {
+        "comments": {
+            "name": "comments",
+            "shortname": "comments",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "comments",
+            "namespace": "",
+            "file": "src/comments/index.js",
+            "line": 13,
+            "description": "The constructor of the comments object."
+        },
+        "dependencies": {
+            "name": "dependencies",
+            "shortname": "dependencies",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "comments",
+            "namespace": "",
+            "file": "src/dependencies/base.js",
+            "line": 13,
+            "description": "Base constructor of the dependencies object.\nThis constructor is incomplete by itself,\nrequiring the format-extensions.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "fileobj",
+                    "description": "\n    The file object to which this dependencies\n    object pertains.",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "builders": {
+            "name": "builders",
+            "shortname": "builders",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "comments",
+            "namespace": "",
+            "file": "src/dependencies/index.js",
+            "line": 8,
+            "description": "Stores dependency object builders.",
+            "static": 1,
+            "access": "private",
+            "tagname": ""
+        }
+    },
     "classitems": [
         {
             "file": "src/comments/block.js",
             "line": 5,
             "description": ">>test-block\nname: test\nvalue: banana\ncolor: yellow\nlist:\n    - first\n    - second",
-            "class": ""
+            "class": "comments"
+        },
+        {
+            "file": "src/comments/block.js",
+            "line": 28,
+            "description": "Builds a regular expression that matches a comment block\nwith a given name.",
+            "itemtype": "method",
+            "name": "blockRegExp",
+            "params": [
+                {
+                    "name": "name",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "RegExp"
+            },
+            "class": "comments"
+        },
+        {
+            "file": "src/comments/block.js",
+            "line": 40,
+            "description": "Tries to match the block.",
+            "itemtype": "method",
+            "name": "blockMatch",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "array|null",
+                "type": "result from str.match"
+            },
+            "class": "comments"
+        },
+        {
+            "file": "src/comments/block.js",
+            "line": 53,
+            "description": "Removes the block data wrapper.",
+            "itemtype": "method",
+            "name": "_blockTrim",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "s",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "comments"
+        },
+        {
+            "file": "src/comments/block.js",
+            "line": 67,
+            "description": "Matches the block, removes wrapper and returns the string.",
+            "itemtype": "method",
+            "name": "block",
+            "params": [
+                {
+                    "name": "name",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "undefined|string"
+            },
+            "class": "comments"
+        },
+        {
+            "file": "src/comments/block.js",
+            "line": 85,
+            "description": "Does the same as .block, just for multiple blocks.",
+            "itemtype": "method",
+            "name": "blocks",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "strings"
+            },
+            "class": "comments"
+        },
+        {
+            "file": "src/comments/index.js",
+            "line": 20,
+            "description": "Raw string contents of the .js file.",
+            "itemtype": "property",
+            "name": "raw",
+            "type": "String",
+            "class": "comments",
+            "module": "comments"
+        },
+        {
+            "file": "src/comments/index.js",
+            "line": 30,
+            "description": "The string that comes immediately before the block name.",
+            "itemtype": "property",
+            "name": "prefix",
+            "type": "String",
+            "class": "comments",
+            "module": "comments"
+        },
+        {
+            "file": "src/comments/index.js",
+            "line": 38,
+            "description": "The string that defines the border of the block",
+            "itemtype": "property",
+            "name": "blockBorder",
+            "type": "String",
+            "class": "comments",
+            "module": "comments"
+        },
+        {
+            "file": "src/comments/index.js",
+            "line": 48,
+            "description": "Prefix to be used before any comment-block name definition.",
+            "itemtype": "property",
+            "name": "prefix",
+            "type": "String",
+            "class": "comments",
+            "module": "comments"
+        },
+        {
+            "file": "src/comments/index.js",
+            "line": 64,
+            "description": "This is just an interfacing method.",
+            "itemtype": "method",
+            "name": "comments",
+            "class": "comments",
+            "module": "comments"
+        },
+        {
+            "file": "src/comments/yaml.js",
+            "line": 6,
+            "description": "Fetches a single block of yaml-formatted data.",
+            "itemtype": "method",
+            "name": "yaml",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "multiple",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "class": "dependencies",
+            "module": "comments"
+        },
+        {
+            "file": "src/comments/yaml.js",
+            "line": 23,
+            "description": "Fetches multiple blocks of yaml-formatted data.",
+            "itemtype": "method",
+            "name": "yamls",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dependencies",
+            "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/lang.js",
             "line": 4,
             "license": "Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.\nAvailable via the MIT or new BSD license.\nsee: http://github.com/jrburke/requirejs for details",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/lang.js",
             "line": 78,
             "description": "mixin({}, obj1, obj2) is allowed. If the last argument is a boolean,\nthen the source objects properties are force copied over to dest.",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -139,28 +388,28 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/lang.js",
             "line": 148,
             "description": "Helper function for iterating over an array. If the func returns\na true value, it will break out of the loop.",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/lang.js",
             "line": 163,
             "description": "Cycles over properties in an object and calls a function for each\nproperty value. If the function returns a truthy value, then the\niteration is stopped.",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/parse.js",
             "line": 4,
             "license": "Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.\nAvailable via the MIT or new BSD license.\nsee: http://github.com/jrburke/requirejs for details",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -178,7 +427,7 @@
                 "description": "an array of strings.\nIf null is returned, then it means the input node was not a valid\ndependency.",
                 "type": "Array"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -216,7 +465,7 @@
                 "description": "JS source string or null, if no require or\ndefine/require.def calls are found.",
                 "type": "String"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -241,7 +490,7 @@
                     "optional": true
                 }
             ],
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -264,7 +513,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -287,7 +536,7 @@
                 "description": "an array of module names that are dependencies. Always\nreturns an array, but could be of length zero.",
                 "type": "Array"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -305,7 +554,7 @@
                 "description": "and array of dependency names. Can be of zero length.",
                 "type": "Array"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -323,7 +572,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -341,14 +590,14 @@
                 "description": "a config details object with the following properties:\n- config: {Object} the config object found. Can be undefined if no\nconfig found.\n- range: {Array} the start index and end index in the contents where\nthe config was found. Can be undefined if no config found.\nCan throw an error if the config in the file cannot be evaluated in\na build context to valid JavaScript.",
                 "type": "Object"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/parse.js",
             "line": 413,
             "description": "for holding a declarative config.",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -371,7 +620,7 @@
                 "description": "the fileContents with the namespace applied",
                 "type": "String"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -394,35 +643,35 @@
                 "description": "an array of dependency strings. The dependencies\nhave not been normalized, they may be relative IDs.",
                 "type": "Array"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/parse.js",
             "line": 494,
             "description": "Finds only CJS dependencies, ones that are the form\nrequire('stringLiteral')",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/parse.js",
             "line": 573,
             "description": "If there is a named define in the file, returns the name. Does not\nscan for mulitple names, just the first one.",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/parse.js",
             "line": 593,
             "description": "Determines if define(), require({}|[]) or requirejs was called in the\nfile. Also finds out if define() is declared and if define.amd is called.",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/amd/lib/r.js/parse.js",
             "line": 632,
             "description": "Determines if require(''), exports.x =, module.exports =,\n__dirname, __filename are used. So, not strictly traditional CommonJS,\nalso checks for Node variants.",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -445,7 +694,7 @@
                 "description": "a JS source string with the valid require/define call.\nOtherwise null.",
                 "type": "String"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -468,7 +717,7 @@
                 "description": "a JS source string.",
                 "type": "String"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -491,7 +740,7 @@
                 "description": "a string of license comments.",
                 "type": "String"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -507,7 +756,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -518,7 +767,7 @@
             "name": "basePath",
             "type": "String",
             "default": "dirname of the file object.",
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -533,7 +782,7 @@
                     "description": ""
                 }
             ],
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -548,7 +797,7 @@
                     "description": ""
                 }
             ],
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
@@ -567,69 +816,162 @@
             "return": {
                 "description": "Array"
             },
-            "class": "",
+            "class": "dependencies",
             "module": "comments"
         },
         {
             "file": "src/dependencies/base.js",
-            "line": 14,
-            "description": "This defines base functionalities for the dependencies object",
-            "class": "",
-            "module": "comments"
-        },
-        {
-            "file": "src/dependencies/base.js",
-            "line": 38,
-            "description": "This method parses arguments for both 'files' and 'filenames'\nmethods.",
-            "itemtype": "method",
-            "name": "__fileInterface",
-            "class": "",
-            "module": "comments"
-        },
-        {
-            "file": "src/dependencies/index.js",
-            "line": 24,
-            "description": "Stores dependency object builders.",
-            "class": "",
-            "module": "comments"
-        },
-        {
-            "file": "src/dependencies/index.js",
-            "line": 35,
-            "description": "Sets a builder.",
-            "class": "",
-            "module": "comments"
-        },
-        {
-            "file": "src/helpers.js",
-            "line": 3,
-            "description": "Useful regular expressions",
+            "line": 27,
+            "description": "Stores reference to the file object this\ndependencies object refers to.",
             "itemtype": "property",
-            "name": "regexp",
-            "class": "",
+            "name": "file",
+            "class": "dependencies",
             "module": "comments"
         },
         {
-            "file": "src/helpers.js",
-            "line": 13,
+            "file": "src/dependencies/base.js",
+            "line": 34,
+            "description": "Path to the file.",
+            "itemtype": "property",
+            "name": "path",
+            "class": "dependencies",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/base.js",
+            "line": 40,
+            "description": "The raw string data of the file.",
+            "itemtype": "property",
+            "name": "src",
+            "class": "dependencies",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/base.js",
+            "line": 53,
+            "description": "Returns the ids of modules on which the current file depends,\noptionally filtered by module origin.\n\nThis method is implemented on format files, as the\ndependency parsing differs according to formats.",
             "itemtype": "method",
-            "name": "pathType",
+            "name": "ids",
             "params": [
                 {
-                    "name": "path",
+                    "name": "origin",
+                    "description": "",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "class": "dependencies",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/base.js",
+            "line": 65,
+            "description": "Takes a module id and returns the full filename\nto the file that stores the module depended upon.\n\nImplemented at format level.",
+            "itemtype": "method",
+            "name": "resolve",
+            "params": [
+                {
+                    "name": "id",
                     "description": "",
                     "type": "String"
                 }
             ],
             "return": {
-                "description": "relative|absolute",
+                "description": "filename",
                 "type": "String"
             },
-            "class": "",
+            "class": "dependencies",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/base.js",
+            "line": 77,
+            "description": "The default set of options for the dependency object.",
+            "itemtype": "property",
+            "name": "options",
+            "class": "dependencies",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/base.js",
+            "line": 88,
+            "description": "This method parses arguments for both 'files' and 'filenames'\nmethods.",
+            "itemtype": "method",
+            "name": "__fileInterface",
+            "class": "dependencies",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/base.js",
+            "line": 104,
+            "description": "Takes a series of options",
+            "itemtype": "method",
+            "name": "filenames",
+            "params": [
+                {
+                    "name": "origin",
+                    "description": "\n    the origin of the modules to be listed:\n    - internal, external, [all]",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "depth",
+                    "description": "\n    the max depth of dependencies to go through\n    if boolean && true, goes to the very end of the tree.",
+                    "type": "Number|Boolean",
+                    "optional": true
+                },
+                {
+                    "name": "base",
+                    "description": "\n    the base path to which filenames should be relative\n    defaults to no base path",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "\n    array of dependency filenames",
+                "type": "Array"
+            },
+            "class": "dependencies",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/base.js",
+            "line": 163,
+            "description": "Implements the same interface as '.filenames',\nbut instead of returning filenames,\nreturns file objects.",
+            "itemtype": "method",
+            "name": "files",
+            "return": {
+                "description": "file objects",
+                "type": "Object"
+            },
+            "class": "dependencies",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/index.js",
+            "line": 24,
+            "description": "This is an 'interface' method that builds a 'dependencies' object.",
+            "itemtype": "method",
+            "name": "dependencies",
+            "params": [
+                {
+                    "name": "format!~YUIDOC_LINE~!",
+                    "description": "module format (cjs, amd, ...)\n    defaults to 'cjs'"
+                },
+                {
+                    "name": "options!~YUIDOC_LINE~!",
+                    "description": "options to be passed to the dependencies object constructor"
+                }
+            ],
+            "class": "builders",
             "module": "comments"
         }
     ],
     "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/comments/block.js:85"
+        },
         {
             "message": "unknown tag: license",
             "line": " src/dependencies/amd/lib/r.js/lang.js:4"
@@ -781,18 +1123,6 @@
         {
             "message": "Missing item type\nExtracts license comments from JS text.",
             "line": " src/dependencies/amd/lib/r.js/parse.js:862"
-        },
-        {
-            "message": "Missing item type\nThis defines base functionalities for the dependencies object",
-            "line": " src/dependencies/base.js:14"
-        },
-        {
-            "message": "Missing item type\nStores dependency object builders.",
-            "line": " src/dependencies/index.js:24"
-        },
-        {
-            "message": "Missing item type\nSets a builder.",
-            "line": " src/dependencies/index.js:35"
         }
     ]
 }

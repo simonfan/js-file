@@ -60,22 +60,22 @@ describe('jsfile basics', function () {
 			});
 		});
 
-		describe('depFnames = deps.filenames([modOrigin = all], [maxDepth = 1], [basePath = false])', function () {
+		describe('depFnames = deps.filenames([modOrigin = all], [depth = 1], [basePath = false])', function () {
 
-			it('depFnames = deps.filenames(origin) -> basepath = false, maxDepth = 1', function () {
+			it('depFnames = deps.filenames(origin) -> basepath = false, depth = 1', function () {
 				var externalFnames = this.cjsDeps.filenames('external');
 
 				externalFnames.length.should.eql(2);
 			});
 
-			it('allDepFnames = deps.filenames(maxDepth) -> origin = \'all\', basepath = false', function () {
+			it('allDepFnames = deps.filenames(depth) -> origin = \'all\', basepath = false', function () {
 				var fnames = this.cjsDeps.filenames(true);
 
 				fnames.length.should.eql(7);
 			});
 
 
-			it('depFnames = deps.filenames(origin, basepath) -> maxDepth = 1', function () {
+			it('depFnames = deps.filenames(origin, basepath) -> depth = 1', function () {
 				// using basepath
 				var basepath = path.join(__dirname, 'demo/cjs'),
 					externalRelativeFnames = this.cjsDeps.filenames('external', basepath);
@@ -90,7 +90,7 @@ describe('jsfile basics', function () {
 				});
 			});
 
-			it('depFnames = deps.filenames(maxDepth, basepath) -> origin = \'all\'', function () {
+			it('depFnames = deps.filenames(depth, basepath) -> origin = \'all\'', function () {
 				var basepath = path.join(__dirname, 'demo/cjs'),
 					externalRelativeFnames = this.cjsDeps.filenames(1, basepath);
 
@@ -142,7 +142,7 @@ describe('jsfile basics', function () {
 
 			this.internalDepsUpTo2nd = this.cjsFile.dependencies('cjs', {
 				origin: 'internal',
-				maxDepth: 2,
+				depth: 2,
 				base: path.join(__dirname, 'demo/cjs'),
 			});
 		});

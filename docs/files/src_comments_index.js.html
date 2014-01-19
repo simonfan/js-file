@@ -41,6 +41,12 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/builders.html">builders</a></li>
+            
+                <li><a href="../classes/comments.html">comments</a></li>
+            
+                <li><a href="../classes/dependencies.html">dependencies</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -99,26 +105,70 @@
 var _ = require(&#x27;lodash&#x27;),
 	subject = require(&#x27;subject&#x27;);
 
-var comments = module.exports = subject(function comments(raw, options) {
 
-	options = options || {};
+/**
+ * The constructor of the comments object.
+ *
+ * @class comments
+ */
+var commentsObject = subject(function commentsObject(raw, options) {
 
+	/**
+	 * Raw string contents of the .js file.
+	 *
+	 * @property raw
+	 * @type String
+	 */
 	this.raw = raw;
 
-	this.options = options;
+	this.options = options || {};
 
-	this.prefix = options.prefix || this.prefix;
+	/**
+	 * The string that comes immediately before the block name.
+	 *
+	 * @property prefix
+	 * @type String
+	 */
+	this.prefix = this.options.prefix || this.prefix;
 
-	this.blockBorder = options.blockBorder || this.blockBorder;
+	/**
+	 * The string that defines the border of the block
+	 *
+	 * @property blockBorder
+	 * @type String
+	 */
+	this.blockBorder = this.options.blockBorder || this.blockBorder;
 });
 
-comments.proto({
+commentsObject.proto({
+	/**
+	 * Prefix to be used before any comment-block name definition.
+	 * @property prefix
+	 * @type String
+	 */
 	prefix: &#x27;&gt;&gt;&#x27;,
 });
 
-// comments.proto(require(&#x27;./line&#x27;));
-comments.proto(require(&#x27;./block&#x27;));
-comments.proto(require(&#x27;./yaml&#x27;));
+// commentsObject.proto(require(&#x27;./line&#x27;));
+commentsObject.proto(require(&#x27;./block&#x27;));
+commentsObject.proto(require(&#x27;./yaml&#x27;));
+
+
+
+
+// exports
+/**
+ * This is just an interfacing method.
+ * @method comments
+ */
+exports.comments = function comments(options) {
+	// guarantee there is data to be parsed
+	if (!this.raw) {
+		this.readSync();
+	}
+
+	return commentsObject(this.raw, options);
+};
 
     </pre>
 </div>
