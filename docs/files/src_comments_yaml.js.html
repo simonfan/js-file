@@ -113,7 +113,7 @@ exports.yaml = function yaml(name, multiple) {
 
 	var block = this.block(name);
 
-	return block ? YAML.load(block) : false;
+	return block ? YAML.load(block) : void(0);
 };
 
 /**
@@ -125,7 +125,7 @@ exports.yaml = function yaml(name, multiple) {
 exports.yamls = function yamls(name) {
 	var blocks = this.blocks(name);
 
-	return blocks ? _.map(blocks, YAML.load) : false;
+	return _.map(blocks, YAML.load);
 };
 
 // aliases

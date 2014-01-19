@@ -21,7 +21,7 @@ describe('jsfile basics', function () {
 		beforeEach(function () {
 			this.cjsFile = jsfile(path.join(__dirname, 'demo/cjs/src/index'));
 
-			this.cjsDeps = this.cjsFile.dependencies('cjs');
+			this.cjsDeps = this.cjsFile.dependencies({ format: 'cjs' });
 		});
 
 		it('depIds = deps.ids()', function () {
@@ -115,12 +115,13 @@ describe('jsfile basics', function () {
 		beforeEach(function () {
 			this.amdFile = jsfile(path.join(__dirname, 'demo/amd/src/index.js'));
 
-			this.amdDeps = this.amdFile.dependencies('cjs');
+			this.amdDeps = this.amdFile.dependencies({ format: 'cjs' });
 		});
 
 		it('amd', function () {
-			var dependencies = this.amdFile.dependencies('amd', {
-				basePath: path.join(__dirname, 'amd'),
+			var dependencies = this.amdFile.dependencies({
+				format: 'amd',
+				base: path.join(__dirname, 'amd'),
 				paths: {
 					lodash: '../bower_components/lodash/lodash',
 					subject: 'lasdlasld'
@@ -140,7 +141,7 @@ describe('jsfile basics', function () {
 
 			this.cjsFile = jsfile(p);
 
-			this.internalDepsUpTo2nd = this.cjsFile.dependencies('cjs', {
+			this.internalDepsUpTo2nd = this.cjsFile.dependencies({ format: 'cjs' }, {
 				origin: 'internal',
 				depth: 2,
 				base: path.join(__dirname, 'demo/cjs'),

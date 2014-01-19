@@ -25,22 +25,13 @@ var builders = {
  * This is an 'interface' method that builds a 'dependencies' object.
  *
  * @method dependencies
- * @param format
- *     module format (cjs, amd, ...)
- *     defaults to 'cjs'
  * @param options
  *     options to be passed to the dependencies object constructor
  */
-exports.dependencies = function dependencies(format, options) {
-	format = format || 'cjs';
+exports.dependencies = function dependencies(options) {
 
-	// retrieve the building function
-	// and partial set the path and src arguments.
-	var builder = _.partial(builders[format], this);
+	options = options || {};
+	var format = options.format || 'cjs';
 
-	// remove the format from the args.
-	var args = Array.prototype.slice.call(arguments);
-	args.shift();
-
-	return builder.apply(this, args);
+	return builders[format](this, options);
 };
