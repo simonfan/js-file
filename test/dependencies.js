@@ -103,6 +103,10 @@ describe('jsfile basics', function () {
 					should(match).be.not.ok;
 				});
 			});
+
+			it('fileObjects = deps.files()', function () {
+				var f = this.cjsDeps.files();
+			})
 		});
 	});
 

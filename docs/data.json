@@ -48,6 +48,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/dependencies/index.js": {
+            "name": "src/dependencies/index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/helpers.js": {
             "name": "src/helpers.js",
             "modules": {},
@@ -571,6 +578,29 @@
             "module": "comments"
         },
         {
+            "file": "src/dependencies/base.js",
+            "line": 38,
+            "description": "This method parses arguments for both 'files' and 'filenames'\nmethods.",
+            "itemtype": "method",
+            "name": "__fileInterface",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/index.js",
+            "line": 24,
+            "description": "Stores dependency object builders.",
+            "class": "",
+            "module": "comments"
+        },
+        {
+            "file": "src/dependencies/index.js",
+            "line": 35,
+            "description": "Sets a builder.",
+            "class": "",
+            "module": "comments"
+        },
+        {
             "file": "src/helpers.js",
             "line": 3,
             "description": "Useful regular expressions",
@@ -755,6 +785,14 @@
         {
             "message": "Missing item type\nThis defines base functionalities for the dependencies object",
             "line": " src/dependencies/base.js:14"
+        },
+        {
+            "message": "Missing item type\nStores dependency object builders.",
+            "line": " src/dependencies/index.js:24"
+        },
+        {
+            "message": "Missing item type\nSets a builder.",
+            "line": " src/dependencies/index.js:35"
         }
     ]
 }

@@ -14,15 +14,14 @@ var jsfile = require('../index');
 /**
  * This defines base functionalities for the dependencies object
  */
-var dependencies = module.exports = subject(function dependencies(filename, filedata, options) {
+var dependencies = module.exports = subject(function dependencies(fileobj, options) {
 
-	filedata = filedata || fs.readFileSync(filename, { encoding: 'utf8' });
-
-	this.path = filename;
-	this.src = filedata;
+	this.file = fileobj;
+	this.path = this.file.path;
+	this.src = this.file.data() || fs.readFileSync(this.path, { encoding: 'utf8' });
 
 	// save options directly to the dependencies object.
-	this.options = _.extend(this.options, options);
+	this.options = _.extend({}, this.options, options);
 });
 
 
@@ -36,17 +35,26 @@ dependencies.proto({
 		base: void(0)
 	},
 
-	filenames: function filenames() {
-
-		// [1] parse arguments.
-		var args = parser(arguments)
+	/**
+	 * This method parses arguments for both 'files' and 'filenames'
+	 * methods.
+	 *
+	 * @method __fileInterface
+	 */
+	__fileInterface: function __fileInterface(args) {
+		return parser(args)
 			.interface(['object'], function (options) { return options; })
 			.interface(['string|undefined', 'number|boolean|undefined', 'string|undefined'], ['origin', 'maxDepth', 'base'])
 			.interface(['string|undefined', 'string|undefined'], ['origin', 'base'])
 			.interface(['number|boolean', 'string|undefined'], ['maxDepth', 'base'])
-			.defaults(this.options);
+			.defaults(this.options)
+			.evaluate();
+	},
 
-		args = args.evaluate();
+	filenames: function filenames() {
+
+		// [1] parse arguments
+		var args = this.__fileInterface(arguments);
 
 		// [2] retrieve immediate dependency files.
 		var ids = this.ids(args.origin),
@@ -87,16 +95,26 @@ dependencies.proto({
 	},
 
 	files: function files() {
-		var filenames = this.filenames.apply(this, arguments);
 
+		// [1] parse arguments
+		var args = this.__fileInterface(arguments);
+
+		// [2] retrieve the keys that will identify file objects
+		var fileIds = this.filenames(args);
+
+		// [3] retrieve the file paths
+		var filePaths = !args.base ? fileIds : _.map(fileIds, function (id) {
+			return path.join(args.base, id);
+		});
+
+		// [4] create a response object
 		var res = {};
 
-		_.each(filenames, function (filename) {
-			// build file and set on res
-			res[filename] = jsfile(filename);
-
+		_.each(fileIds, function (id, index) {
+			// use file.constructor.
+			res[id] = this.file.constructor(filePaths[index]);
 		}.bind(this));
 
 		return res;
-	},
+	}
 });
