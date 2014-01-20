@@ -3,7 +3,8 @@
 var path = require('path');
 
 var subject = require('subject'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	mapo = require('mapo');
 
 /**
  * Base constructor of the dependencies object.
@@ -172,5 +173,31 @@ dependencies.proto({
 		}.bind(this));
 
 		return res;
-	}
+	},
+
+	/**
+	 * @method map
+	 * @param what {String} ['filenames','files','ids']
+	 * @param func
+	 */
+	map: function map(what, func) {
+		return _.map(this[what](), func);
+	},
+
+	/**
+	 * Invokes a method over the file object of each dependency.
+	 *
+	 * @method invoke
+	 * @param method {String}
+	 */
+	invoke: function invoke(method) {
+		var files = this.files(),
+			args = Array.prototype.slice.call(arguments);
+
+		args.shift();
+
+		return mapo(files, function (f) {
+			return f[method].apply(f, args);
+		});
+	},
 });
