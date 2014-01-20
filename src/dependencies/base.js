@@ -1,14 +1,9 @@
 'use strict';
 
-var path = require('path'),
-	fs = require('fs');
+var path = require('path');
 
 var subject = require('subject'),
-	_ = require('lodash'),
-	parser = require('argument-parser');
-
-// CAREFUL! circular dependency here..
-var jsfile = require('../index');
+	_ = require('lodash');
 
 /**
  * Base constructor of the dependencies object.
@@ -39,9 +34,14 @@ var dependencies = module.exports = subject(function dependencies(fileobj, optio
 
 	/**
 	 * The raw string data of the file.
-	 * @property src
+	 * @property raw
 	 */
-	this.src = this.file.data() || fs.readFileSync(this.path, { encoding: 'utf8' });
+	var raw = this.file.raw();
+	if (!raw) {
+		this.file.readSync();
+		raw = this.file.raw();
+	}
+	this.raw = raw;
 
 	// save options directly to the dependencies object.
 	this.options = _.extend({}, this.options, options);
@@ -50,6 +50,23 @@ var dependencies = module.exports = subject(function dependencies(fileobj, optio
 
 // set proto properties
 dependencies.proto({
+	/**
+	 * The default set of options for the dependency object.
+	 *
+	 * @property options
+	 *     @property origin ['all']
+	 *         Filter dependencies according to their origins (internal, external, all)
+	 *     @property depth [1]
+	 *         The max depth to go in the search for dependencies.
+	 *     @property base [undefined]
+	 *         The base path from which filenames should be resolved.
+	 */
+	options: {
+		origin: 'all',
+		depth: 1,
+		base: void(0)
+	},
+
 	/**
 	 * Returns the ids of modules on which the current file depends,
 	 * optionally filtered by module origin.
@@ -75,55 +92,16 @@ dependencies.proto({
 	// resolve: function resolve(id) {}
 
 	/**
-	 * The default set of options for the dependency object.
-	 *
-	 * @property options
-	 */
-	options: {
-		origin: 'all',
-		depth: 1,
-		base: void(0)
-	},
-
-	/**
-	 * This method parses arguments for both 'files' and 'filenames'
-	 * methods.
-	 *
-	 * @method __fileInterface
-	 */
-	__fileInterface: function __fileInterface(args) {
-		return parser(args)
-			.interface(['object'], function (options) { return options; })
-			.interface(['string|undefined', 'number|boolean|undefined', 'string|undefined'], ['origin', 'depth', 'base'])
-			.interface(['string|undefined', 'string|undefined'], ['origin', 'base'])
-			.interface(['number|boolean', 'string|undefined'], ['depth', 'base'])
-			.defaults(this.options)
-			.evaluate();
-	},
-
-	/**
 	 * Takes a series of options
 	 *
 	 * @method filenames
-	 * @param [origin] {String}
-	 *     the origin of the modules to be listed:
-	 *     - internal, external, [all]
-	 * @param [depth] {Number|Boolean}
-	 *     the max depth of dependencies to go through
-	 *     if boolean && true, goes to the very end of the tree.
-	 * @param [base] {String}
-	 *     the base path to which filenames should be relative
-	 *     defaults to no base path
 	 * @return {Array}
 	 *     array of dependency filenames
 	 */
 	filenames: function filenames() {
 
-		// [1] parse arguments
-		var args = this.__fileInterface(arguments);
-
-		// [2] retrieve immediate dependency files.
-		var ids = this.ids(args.origin),
+		// [1] retrieve immediate dependency files.
+		var ids = this.ids(this.options.origin),
 			// fnames has only ABSOLUTE paths.
 			fnames = ids.map(this.resolve.bind(this));
 
@@ -133,27 +111,34 @@ dependencies.proto({
 		fnames = _.compact(fnames);
 
 
-		// [3] create an answer object
+		// [2] create an answer object
 		//     that has only paths relative to the base.
-		var res = !args.base ? fnames : _.map(fnames, function (fname) {
-			return path.relative(args.base, fname);
-		});
+		var res = !this.options.base ? fnames : _.map(fnames, function (fname) {
+			return path.relative(this.options.base, fname);
+		}.bind(this));
 
-		// [4] if required, go recursive.
-		if (args.depth > 1 || args.depth === true) {
+		// [3] if required, go recursive.
+		if (this.options.depth > 1 || this.options.depth === true) {
 
 			// calculate depth
-			args.depth = typeof args.depth === 'number' ?
-				args.depth - 1 : // number
-				args.depth;		// boolean
+			var depth = typeof this.options.depth === 'number' ?
+				this.options.depth - 1 : 	// number
+				this.options.depth;			// boolean
+
+
+			// create a new depOptions
+			var depOptions = _.extend({}, this.options, {
+				depth: depth
+			});
 
 			// go deeper
 			_.each(fnames, function (fname) {
+					// create the file object
+				var file = this.file.constructor(fname),
+					// create the dependencies object
+					deps = file.dependencies(depOptions);
 
-				var file = jsfile(fname),
-					deps = file.dependencies(this.moduleFormat);
-
-				res = _.union(res, deps.filenames(args));
+				res = _.union(res, deps.filenames());
 			}.bind(this));
 		}
 
@@ -170,18 +155,15 @@ dependencies.proto({
 	 */
 	files: function files() {
 
-		// [1] parse arguments
-		var args = this.__fileInterface(arguments);
+		// [1] retrieve the keys that will identify file objects
+		var fileIds = this.filenames();
 
-		// [2] retrieve the keys that will identify file objects
-		var fileIds = this.filenames(args);
+		// [2] retrieve the file paths
+		var filePaths = !this.options.base ? fileIds : _.map(fileIds, function (id) {
+			return path.join(this.options.base, id);
+		}.bind(this));
 
-		// [3] retrieve the file paths
-		var filePaths = !args.base ? fileIds : _.map(fileIds, function (id) {
-			return path.join(args.base, id);
-		});
-
-		// [4] create a response object
+		// [3] create a response object
 		var res = {};
 
 		_.each(fileIds, function (id, index) {

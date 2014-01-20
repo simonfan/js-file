@@ -43,7 +43,7 @@ AMD.proto({
 			// base url where to look for module files
 			// and relative to which the module paths will be defined
 			// (must coincide with that defined in mainConfigFile)
-			basePath: './src',
+			basePath: './raw',
 
 			mainConfigFile: 'amdconfig.js',
 
@@ -88,9 +88,9 @@ AMD.proto({
 	 * @param fpath
 	 */
 	parseRequireJsConfig: function parseRequireJsConfig(fpath) {
-		var src = fs.readFileSync(fpath, { encoding: 'utf8' });
+		var raw = fs.readFileSync(fpath, { encoding: 'utf8' });
 
-		config = rjsparse.findConfig(src).config;
+		config = rjsparse.findConfig(raw).config;
 
 		return config;
 	},
@@ -145,7 +145,7 @@ AMD.proto({
 	 * @return Array
 	 */
 	ids: function ids() {
-		return rjsparse.findDependencies(this.path, this.src);
+		return rjsparse.findDependencies(this.path, this.raw);
 	},
 });
 

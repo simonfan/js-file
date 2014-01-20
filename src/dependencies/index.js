@@ -20,7 +20,6 @@ var builders = {
 	amd: amdRequireJs
 };
 
-
 /**
  * This is an 'interface' method that builds a 'dependencies' object.
  *
@@ -31,7 +30,11 @@ var builders = {
 exports.dependencies = function dependencies(options) {
 
 	options = options || {};
-	var format = options.format || 'cjs';
 
-	return builders[format](this, options);
+	var builder = builders[this.format];
+	if (!builder) {
+		throw new Error(this.format + ' is not supported as a module format type.')
+	}
+
+	return builder(this, options);
 };
