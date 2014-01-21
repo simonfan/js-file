@@ -28,4 +28,11 @@ describe('data = file.comments([options]).yaml(name)', function () {
 		_.first(ymls).name.should.equal('write lalalala')
 	});
 
+	it('throws yaml parsing errors', function () {
+
+		(function () {
+			var ymls = this.file.comments().ymls('invalid-yaml');
+		}.bind(this)).should.throwError();
+	});
+
 });

@@ -30,6 +30,13 @@ var comments = module.exports = subject(function comments(raw, options) {
 	this.options = options || {};
 
 	/**
+	 * Optionally define a filepath, so that parsing
+	 * errors are more easily tracked.
+	 * @property filepath
+	 */
+	this.filepath = this.options.filepath;
+
+	/**
 	 * The string that comes immediately before the block name.
 	 *
 	 * @property prefix

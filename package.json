@@ -1,7 +1,7 @@
 {
   "name": "js-file",
   "main": "./src",
-  "version": "0.4.6",
+  "version": "0.4.6a",
   "description": "Introspect .js files.",
   "repository": {
     "type": "git",

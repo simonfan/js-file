@@ -13,7 +13,12 @@ var aaa = 'lalala';
  *
  */
 
-
+/**
+ * >>invalid-yaml-block
+ * %: 89
+ *
+ *
+ */
 
 
 /**

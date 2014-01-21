@@ -3,7 +3,7 @@
 //     jsfile is licensed under the MIT terms.
 
 /**
- * CJS module.
+ * Analyze .js files with this wrapper.
  *
  * @module jsfile
  */

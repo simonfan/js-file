@@ -20,5 +20,9 @@ exports.comments = function comments(options) {
 		this.readSync();
 	}
 
+	options = options || {};
+	// set options.filepath
+	options.filepath = this.path;
+
 	return commentsObject(this.raw(), options);
 };
